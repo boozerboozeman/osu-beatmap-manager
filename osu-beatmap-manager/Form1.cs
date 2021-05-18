@@ -48,21 +48,26 @@ namespace osu_beatmap_manager
                 label2.Text += findBeatmaps( @"C:\Users\" + Environment.UserName + "\\AppData\\Local\\osu!\\Songs\\").ToString();
             }
             else { 
-                label1.Text += "Couldn't detect your install of osu.";
+                label1.Text += "Couldn't detect your install of osu!.";
+                button1.Enabled = false;
             }
         }
 
         public void backupMaps(string[] maps)
         {
-          
-            foreach(string map in maps){
-                ZipFile.CreateFromDirectory(map, map + ".osz");
+
+            for(int i = 0; i < maps.Length; i++){
+                ZipFile.CreateFromDirectory(maps[i], maps[i] + ".osz");
+
+                int actualValue = i + 1;
+                label3.Text = "Backing up beatmap " + actualValue.ToString() + " out of " + maps.Length.ToString();
+                
             }
+            MessageBox.Show("Your beatmaps have been restored to their original state at:" + " C:\\Users\\" + Environment.UserName + "\\AppData\\Local\\osu!\\Songs\\");
         }
         private void button1_Click(object sender, EventArgs e)
         {
             string[] files = Directory.GetFileSystemEntries(@"C:\Users\" + Environment.UserName + "\\AppData\\Local\\osu!\\Songs\\", "*");
-            label3.Text = "Backing up beatmaps";
             backupMaps(files);
         }
     }
